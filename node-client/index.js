@@ -19,10 +19,6 @@ const socketio = require('socket.io-client');
 
 const socket = socketio(process.env.SERVER_URL || 'http://localhost:8181');
 
-socket.on('connect', () => {
-  console.log('connected to server');
-});
-
 class PerfMon {
   constructor(updateInterval = 1000) {
     const osNames = {
@@ -114,20 +110,48 @@ class PerfMon {
     };
   }
 
-  init() {
-    // todo replace console logs once server is set up
-    console.log(this.initialData);
-    setInterval(() => {
-      console.log({
-        freeMem: this.freeMem,
-        upTime: this.upTime,
-        memUsage: this.memUsage,
-        cpuUsage: this.cpuUsage,
-      });
-    }, this.updateInterval);
+  // Data updated each tick
+  get tickData() {
+    return {
+      freeMem: this.freeMem,
+      upTime: this.upTime,
+      memUsage: this.memUsage,
+      cpuUsage: this.cpuUsage,
+    };
+  }
+
+  init(connection) {
+    if (!connection) {
+      console.log(this.initialData);
+      setInterval(() => {
+        console.log(this.tickData);
+      }, this.updateInterval);
+    } else {
+      console.log(`Connected to ${connection.id}, updates handled by socket.`);
+    }
   }
 }
 
-const mon = new PerfMon(2000);
+const monitor = new PerfMon(process.env.UPDATE_INTERVAL || 1000);
 
-mon.init();
+socket.on('connect', () => {
+  // need unique identifier for this device, will use non-internal mac address
+  const { mac } = Object.values(os.networkInterfaces()).find(
+    arr => !arr[0].internal && arr[0].mac !== '00:00:00:00:00:00',
+  )[0];
+  monitor.init(socket);
+
+  // Authorize client
+  socket.emit('clientAuth', process.env.NODE_KEY || 'nodeClientKey');
+
+  socket.emit('initialData', monitor.initialData); // send initial payload
+
+  // send tick data each tick
+  const sendPerfDataInterval = setInterval(() => {
+    socket.emit('perfData', monitor.tickData);
+  }, monitor.updateInterval);
+
+  socket.on('disconnect', () => {
+    clearInterval(sendPerfDataInterval);
+  });
+});
