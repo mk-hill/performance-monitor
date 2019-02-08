@@ -31,6 +31,11 @@ class PerfMon {
     this.totalMem = os.totalmem(); // in bytes
     this.hostName = os.hostname();
 
+    // need unique identifier for this device, will use non-internal mac address
+    this.mac = Object.values(os.networkInterfaces()).find(
+      arr => !arr[0].internal && arr[0].mac !== '00:00:00:00:00:00',
+    )[0].mac;
+
     const {
       length: cores, // number of logical cores
       0: { model, speed }, // speed in MHz
@@ -101,6 +106,7 @@ class PerfMon {
   // Static data which only needs to be sent once
   get initialData() {
     return {
+      mac: this.mac,
       hostName: this.hostName,
       osType: this.osType,
       ...this.cpu,
@@ -135,10 +141,6 @@ class PerfMon {
 const monitor = new PerfMon(process.env.UPDATE_INTERVAL || 1000);
 
 socket.on('connect', () => {
-  // need unique identifier for this device, will use non-internal mac address
-  const { mac } = Object.values(os.networkInterfaces()).find(
-    arr => !arr[0].internal && arr[0].mac !== '00:00:00:00:00:00',
-  )[0];
   monitor.init(socket);
 
   // Authorize client
