@@ -111,7 +111,6 @@ class PerfMon {
       osType: this.osType,
       ...this.cpu,
       totalMem: this.totalMem,
-      upTime: this.upTime,
       updateInterval: this.updateInterval,
     };
   }
@@ -123,6 +122,13 @@ class PerfMon {
       upTime: this.upTime,
       memUsage: this.memUsage,
       cpuUsage: this.cpuUsage,
+    };
+  }
+
+  get allData() {
+    return {
+      ...this.initialData,
+      ...this.tickData,
     };
   }
 
@@ -149,9 +155,10 @@ socket.on('connect', () => {
 
   socket.emit('initialData', monitor.initialData); // send initial payload
 
-  // send tick data each tick
+  // sending all data for now, consider sending only tick data if
+  // network load needs to be reduced
   const sendPerfDataInterval = setInterval(() => {
-    socket.emit('perfData', monitor.tickData);
+    socket.emit('perfData', monitor.allData);
   }, monitor.updateInterval);
 
   socket.on('disconnect', () => {

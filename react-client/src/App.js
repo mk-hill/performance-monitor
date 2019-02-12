@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import DeviceView from './DeviceView';
 
 import socket from './util/socket';
 
@@ -8,31 +9,31 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      performanceData: {},
+      devices: {},
     };
   }
 
+  updateDevice = perfData => {
+    this.setState({
+      devices: {
+        ...this.state.devices,
+        [perfData.mac]: perfData,
+      },
+    });
+    console.log(perfData);
+  };
+
   componentDidMount() {
-    socket.on('data', data => console.log(data));
+    socket.on('data', this.updateDevice);
   }
 
   render() {
+    const { devices } = this.state;
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        {Object.keys(devices).map(macAddress => (
+          <DeviceView data={devices[macAddress]} />
+        ))}
       </div>
     );
   }
