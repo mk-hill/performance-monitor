@@ -11,10 +11,13 @@ function socketWorker(server, socket) {
     const nodeKey = process.env.NODE_KEY || 'nodeClientKey';
     const reactKey = process.env.REACT_KEY || 'reactClientKey';
     if (key === nodeKey) {
+      console.log('Node client connected.');
       socket.join('nodeClients');
     } else if (key === reactKey) {
+      console.log('React client connected.');
       socket.join('reactClients');
     } else {
+      console.log('Client key rejected.');
       socket.disconnect(true);
     }
   });
@@ -29,7 +32,8 @@ function socketWorker(server, socket) {
     console.log(initialData);
   });
   socket.on('perfData', (perfData) => {
-    console.log(perfData);
+    console.log(mac, perfData);
+    server.to('reactClients').emit('data', perfData);
   });
 }
 

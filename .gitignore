@@ -14,6 +14,7 @@
 .env.production.local
 
 /*/.eslintrc.json
+/*/dump.rdb
 
 npm-debug.log*
 yarn-debug.log*

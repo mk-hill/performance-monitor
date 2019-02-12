@@ -127,6 +127,7 @@ class PerfMon {
   }
 
   init(connection) {
+    // Log locally if not connected to server
     if (!connection) {
       console.log(this.initialData);
       setInterval(() => {
