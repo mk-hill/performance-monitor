@@ -151,7 +151,7 @@ socket.on('connect', () => {
   monitor.init(socket);
 
   // Authorize client
-  socket.emit('clientAuth', process.env.NODE_KEY || 'nodeClientKey');
+  socket.emit('clientAuth', process.env.MONITOR_KEY || 'monitorKey');
 
   socket.emit('initialData', monitor.initialData); // send initial payload
 

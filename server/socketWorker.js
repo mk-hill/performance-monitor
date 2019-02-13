@@ -8,8 +8,8 @@ function socketWorker(server, socket) {
   let mac; // will keep track of mac address
 
   socket.on('clientAuth', (key) => {
-    const nodeKey = process.env.NODE_KEY || 'nodeClientKey';
-    const reactKey = process.env.REACT_KEY || 'reactClientKey';
+    const nodeKey = process.env.MONITOR_KEY || 'monitorKey';
+    const reactKey = process.env.DASHBOARD_KEY || 'dashboardKey';
     if (key === nodeKey) {
       console.log('Node client connected.');
       socket.join('nodeClients');

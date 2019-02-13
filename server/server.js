@@ -13,7 +13,7 @@ const net = require('net');
 const socketio = require('socket.io');
 // const helmet = require('helmet')
 
-const port = process.env.port || 8181;
+const port = process.env.PORT || 8181;
 const numProcesses = require('os').cpus().length;
 
 // have to run redis via: $ redis-server
