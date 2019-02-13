@@ -6,7 +6,7 @@ import DeviceView from './DeviceView';
 import socket from './util/socket';
 
 // How long to wait in addition to update interval before assuming device is offline
-const timeout = 2000;
+const timeout = process.env.REACT_APP_TIMEOUT || 2000;
 
 const Wrapper = styled.div`
   box-sizing: border-box;

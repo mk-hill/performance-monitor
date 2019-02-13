@@ -18,7 +18,7 @@ const ViewBox = styled.div`
   box-shadow: 2px 2px 5px 2px rgba(50, 70, 90, 0.2);
   text-align: center;
   padding: 0.8rem;
-  min-width: max-content;
+  min-width: 900px;
   max-width: 1400px;
 
   display: flex;
