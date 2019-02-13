@@ -15,3 +15,7 @@ export function formatSeconds(seconds) {
   date.setSeconds(seconds);
   return date.toISOString().slice(11, -5);
 }
+
+export function formatMhz(mhz) {
+  return mhz > 1000 ? `${(mhz / 1000).toFixed(2)} GHz` : `${mhz} MHz`;
+}

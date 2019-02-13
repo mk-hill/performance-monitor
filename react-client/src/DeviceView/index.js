@@ -18,6 +18,7 @@ const ViewBox = styled.div`
   box-shadow: 2px 2px 5px 2px rgba(50, 70, 90, 0.2);
   text-align: center;
   padding: 0.8rem;
+  min-width: max-content;
   max-width: 1400px;
 
   display: flex;
@@ -42,6 +43,7 @@ const OfflineText = styled.h3`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  z-index: 5;
 `;
 
 const Widget = ({ data }) => {
@@ -66,8 +68,16 @@ const Widget = ({ data }) => {
       {isOffline ? <OfflineText>Offline</OfflineText> : null}
       <h3>{hostName}</h3>
       <h4>{osType}</h4>
-      <UsageIndicator title="CPU Usage" value={cpuUsage} />
-      <UsageIndicator title="Memory Usage" value={memUsage} />
+      <UsageIndicator
+        title="CPU Usage"
+        value={cpuUsage}
+        isOffline={isOffline}
+      />
+      <UsageIndicator
+        title="Memory Usage"
+        value={memUsage}
+        isOffline={isOffline}
+      />
       <Info
         data={{
           model,
@@ -75,7 +85,6 @@ const Widget = ({ data }) => {
           cores,
           updateInterval,
           totalMem,
-          mac,
           upTime,
           freeMem,
         }}
