@@ -17,7 +17,7 @@
 const os = require('os');
 const socketio = require('socket.io-client');
 
-const socket = socketio(process.env.SERVER_URL || 'http://localhost:8181');
+const socket = socketio(process.env.SERVER_URL || 'http://localhost:8080');
 
 class PerfMon {
   constructor(updateInterval = 1000) {
