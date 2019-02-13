@@ -145,7 +145,7 @@ class PerfMon {
   }
 }
 
-const monitor = new PerfMon(process.env.UPDATE_INTERVAL || 1000);
+const monitor = new PerfMon(Number(process.env.UPDATE_INTERVAL) || 1000);
 
 socket.on('connect', () => {
   monitor.init(socket);
