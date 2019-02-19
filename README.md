@@ -35,6 +35,8 @@ React client to view status of all connected devices. `npm build` and deploy usi
 
 Will display all monitors the server has received data from (and authenticated, if applicable) since the start of the session. Devices which go offline will be labeled, and will automatically resume updating when they come online again.
 
+Each device is updated in real time as its monitor sends data to the server. Custom update intervals will be reflected on the dashboard.
+
 Customization:
 
 - REACT_APP_TIMEOUT: number of ms to allow for latency before a device is presumed offline, defaults to 2000
@@ -65,8 +67,8 @@ Dependencies:
 
 - [MongoDB](https://www.mongodb.com/)
 - [Redis](https://redis.io/)
-- [express](https://www.npmjs.com/express)
-- [farmhash](https://www.npmjs.com/farmhash)
-- [mongoose](https://www.npmjs.com/mongoose)
 - [socket.io](https://www.npmjs.com/socket.io)
-- [socket.io-redis](https://www.npmjs.com/socket.io-redis)
+  - [socket.io-redis](https://www.npmjs.com/socket.io-redis)
+- [express](https://www.npmjs.com/express)
+- [mongoose](https://www.npmjs.com/mongoose)
+- [farmhash](https://www.npmjs.com/farmhash)
